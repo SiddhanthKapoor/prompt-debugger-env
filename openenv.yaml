@@ -1,0 +1,29 @@
+name: prompt-debugger-env
+version: "1.0.0"
+description: "Environment where AI agents debug and repair broken LLM system prompts"
+author: "your-hf-username"
+tags:
+  - openenv
+  - prompt-engineering
+  - llm-evaluation
+  - real-world
+
+tasks:
+  - name: fix-output-format
+    difficulty: easy
+    max_steps: 5
+    description: "Fix a prompt that produces inconsistent JSON output format"
+
+  - name: fix-hallucination
+    difficulty: medium
+    max_steps: 5
+    description: "Fix a prompt that confidently hallucinates product information"
+
+  - name: fix-adversarial-robustness
+    difficulty: hard
+    max_steps: 5
+    description: "Fix a prompt vulnerable to prompt injection and jailbreak attacks"
+
+observation_space: "PromptDebuggerObservation"
+action_space: "PromptDebuggerAction"
+reward_range: [-1.0, 1.0]

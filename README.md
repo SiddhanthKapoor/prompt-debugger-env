@@ -1,3 +1,14 @@
+---
+title: Prompt Debugger Env
+emoji: 🔧
+colorFrom: blue
+colorTo: purple
+sdk: docker
+pinned: false
+tags:
+  - openenv
+---
+
 # prompt-debugger-env
 
 **prompt-debugger-env** is an OpenEnv environment where an AI agent acts as a prompt engineer to debug and repair broken LLM system prompts. With system prompts routinely failing gracefully under pressure (hallucinating, producing invalid formats, or failing to prompt injection), this environment presents failing inputs alongside descriptions of what the prompt *should* do, automatically grading the agent's updated prompts using rigorous adversarial evaluation checklists.

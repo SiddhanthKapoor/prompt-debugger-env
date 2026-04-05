@@ -16,7 +16,10 @@ async def reset(req: ResetRequest):
 
 @app.post("/step")
 async def step(action: PromptDebuggerAction):
-    return await env.step(action)
+    try:
+        return await env.step(action)
+    except RuntimeError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 @app.get("/state")
 async def state():

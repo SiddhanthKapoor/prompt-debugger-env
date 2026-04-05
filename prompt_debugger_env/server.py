@@ -31,3 +31,12 @@ async def state():
 @app.get("/health")
 async def health():
     return {"status": "ok"}
+
+@app.get("/debug")
+async def debug():
+    import os
+    return {
+        "HF_TOKEN_set": bool(os.getenv("HF_TOKEN")),
+        "API_BASE_URL": os.getenv("API_BASE_URL"),
+        "MODEL_NAME": os.getenv("MODEL_NAME")
+    }

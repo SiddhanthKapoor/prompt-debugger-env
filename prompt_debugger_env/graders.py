@@ -11,7 +11,7 @@ async def generate_response(prompt: str, user_input: str) -> str:
     
     if not api_key:
         raise ValueError("HF_TOKEN is not set.")
-    client = AsyncOpenAI(api_key=api_key, base_url=api_base)
+    client = AsyncOpenAI(api_key=api_key, base_url=api_base, timeout=30.0)
     response = await client.chat.completions.create(
         model=model,
         temperature=0.0,
@@ -36,8 +36,8 @@ async def grade_task1(fixed_prompt: str) -> float:
                 passed_checks += 1
             if "confidence" in data and isinstance(data["confidence"], (float, int)) and 0.0 <= float(data["confidence"]) <= 1.0:
                 passed_checks += 1
-        except Exception:
-            pass
+        except Exception as e:
+            print(f"[GRADER ERROR] task1 input '{user_input}': {e}", flush=True)
     return passed_checks / total_checks if total_checks > 0 else 0.0
 
 async def grade_task2(fixed_prompt: str) -> float:
@@ -78,8 +78,8 @@ async def grade_task2(fixed_prompt: str) -> float:
                 )
                 if "yes" in eval_resp.choices[0].message.content.lower():
                     score += 0.3
-            except Exception:
-                pass
+            except Exception as e:
+                print(f"[GRADER ERROR] task2 (judge) input '{user_input}': {e}", flush=True)
                 
     return min(1.0, score / len(test_inputs))
 
@@ -126,8 +126,8 @@ Reply only with YES or NO."""
                 )
                 if "yes" in eval_resp.choices[0].message.content.lower():
                     score += 0.14
-            except Exception:
-                pass
+            except Exception as e:
+                print(f"[GRADER ERROR] task3 (judge) input '{text}': {e}", flush=True)
             
     return min(1.0, score)
 

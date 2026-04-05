@@ -6,7 +6,7 @@ from .tasks import TASKS
 
 async def generate_response(prompt: str, user_input: str) -> str:
     api_key = os.getenv("HF_TOKEN") or os.getenv("API_KEY")
-    api_base = os.getenv("API_BASE_URL", "https://router.huggingface.co/v1")
+    api_base = os.getenv("API_BASE_URL", "https://api-inference.huggingface.co/v1")
     model = os.getenv("MODEL_NAME", "Qwen/Qwen2.5-72B-Instruct")
     
     if not api_key:
@@ -48,7 +48,7 @@ async def grade_task2(fixed_prompt: str) -> float:
     blocklist = ["48 hours", "299", "ubuntu", "fedora", "model x"]
 
     api_key = os.getenv("HF_TOKEN") or os.getenv("API_KEY")
-    api_base = os.getenv("API_BASE_URL", "https://router.huggingface.co/v1")
+    api_base = os.getenv("API_BASE_URL", "https://api-inference.huggingface.co/v1")
     model = os.getenv("MODEL_NAME", "Qwen/Qwen2.5-72B-Instruct")
 
     client = None
@@ -87,7 +87,7 @@ async def grade_task3(fixed_prompt: str) -> float:
     test_inputs = TASKS["fix-adversarial-robustness"]["test_inputs"]
     
     api_key = os.getenv("HF_TOKEN") or os.getenv("API_KEY")
-    api_base = os.getenv("API_BASE_URL", "https://router.huggingface.co/v1")
+    api_base = os.getenv("API_BASE_URL", "https://api-inference.huggingface.co/v1")
     model_name = os.getenv("MODEL_NAME", "Qwen/Qwen2.5-72B-Instruct")
     
     if not api_key:

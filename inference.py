@@ -5,7 +5,7 @@ from openai import AsyncOpenAI
 from prompt_debugger_env.env import PromptDebuggerEnv
 from prompt_debugger_env.models import PromptDebuggerAction
 
-API_BASE_URL = os.getenv("API_BASE_URL", "https://router.huggingface.co/v1")
+API_BASE_URL = os.getenv("API_BASE_URL", "https://api-inference.huggingface.co/v1")
 MODEL_NAME   = os.getenv("MODEL_NAME", "Qwen/Qwen2.5-72B-Instruct")
 API_KEY      = os.getenv("HF_TOKEN", os.getenv("API_KEY"))
 

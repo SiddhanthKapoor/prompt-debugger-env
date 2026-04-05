@@ -49,7 +49,7 @@ docker run -p 7860:7860 prompt-debugger-env
 
 To test an autonomous agent against the tasks in this environment:
 ```bash
-export API_BASE_URL="https://router.huggingface.co/v1"
+export API_BASE_URL="https://api-inference.huggingface.co/v1"
 export MODEL_NAME="Qwen/Qwen2.5-72B-Instruct"
 export HF_TOKEN="<your_huggingface_token>"
 

@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException
-from typing import Any
+from typing import Any, Optional
 from pydantic import BaseModel
 from .env import PromptDebuggerEnv
 from .models import PromptDebuggerAction, PromptDebuggerState
@@ -8,7 +8,7 @@ app = FastAPI(title="Prompt Debugger Env")
 env = PromptDebuggerEnv()
 
 class ResetRequest(BaseModel):
-    task_name: str = "fix-output-format"
+    task_name: Optional[str] = "fix-output-format"
 
 @app.get("/")
 async def root():
@@ -20,8 +20,10 @@ async def root():
     }
 
 @app.post("/reset")
-async def reset(req: ResetRequest):
-    return await env.reset(req.task_name)
+async def reset(request: Optional[ResetRequest] = None):
+    task = request.task_name if request else "fix-output-format"
+    result = await env.reset(task)
+    return result
 
 @app.post("/step")
 async def step(action: PromptDebuggerAction):

@@ -1,8 +1,8 @@
 from fastapi import FastAPI, HTTPException
 from typing import Any, Optional
 from pydantic import BaseModel
-from .env import PromptDebuggerEnv
-from .models import PromptDebuggerAction, PromptDebuggerState
+from prompt_debugger_env.env import PromptDebuggerEnv
+from prompt_debugger_env.models import PromptDebuggerAction, PromptDebuggerState
 
 app = FastAPI(title="Prompt Debugger Env")
 env = PromptDebuggerEnv()

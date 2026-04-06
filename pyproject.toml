@@ -17,4 +17,4 @@ dependencies = [
 ]
 
 [project.scripts]
-serve = "prompt_debugger_env.server:app"
+server = "server.app:app"

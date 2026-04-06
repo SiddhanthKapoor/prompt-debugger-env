@@ -10,6 +10,15 @@ env = PromptDebuggerEnv()
 class ResetRequest(BaseModel):
     task_name: str = "fix-output-format"
 
+@app.get("/")
+async def root():
+    return {
+        "app": "Prompt Debugger Env",
+        "message": "Welcome! The environment is running.",
+        "description": "An OpenEnv environment for debugging and repairing LLM system prompts.",
+        "endpoints": ["/reset (POST)", "/step (POST)", "/state (GET)", "/health (GET)", "/debug (GET)"]
+    }
+
 @app.post("/reset")
 async def reset(req: ResetRequest):
     return await env.reset(req.task_name)

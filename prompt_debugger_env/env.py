@@ -29,15 +29,15 @@ class PromptDebuggerEnv:
             attempts=0,
             max_attempts=task_data.get("max_steps", 5),
             done=False,
-            cumulative_score=0.0,
-            best_score=0.0
+            cumulative_score=0.01,
+            best_score=0.01
         )
         
         obs = PromptDebuggerObservation(
             broken_prompt=self._state.broken_prompt,
             failure_examples=task_data["failure_examples"],
             task_description=task_data["description"],
-            last_score=0.0,
+            last_score=0.01,
             attempts_remaining=self._state.max_attempts,
             feedback="Ready. Here's your broken prompt and how it's failing."
         )
@@ -53,13 +53,8 @@ class PromptDebuggerEnv:
         
         raw_score = await grade(self._state.task_name, fixed_prompt)
         
-        reward = raw_score - self._state.best_score
+        reward = raw_score
         
-        # Penalize identical or trivial prompts
-        if len(fixed_prompt) < 50:
-            reward -= 0.2
-        if fixed_prompt.strip() == self._state.broken_prompt.strip():
-            reward -= 0.1
             
         self._state.best_score = max(self._state.best_score, raw_score)
         self._state.cumulative_score += reward

@@ -26,4 +26,4 @@ tasks:
 
 observation_space: "PromptDebuggerObservation"
 action_space: "PromptDebuggerAction"
-reward_range: [-1.0, 1.0]
+reward_range: [0.01, 0.99]

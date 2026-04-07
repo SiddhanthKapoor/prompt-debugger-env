@@ -5,12 +5,12 @@ from openai import AsyncOpenAI
 from .tasks import TASKS
 
 async def generate_response(prompt: str, user_input: str) -> str:
-    api_key = os.getenv("HF_TOKEN") or os.getenv("API_KEY")
-    api_base = os.getenv("API_BASE_URL", "https://api-inference.huggingface.co/v1")
-    model = os.getenv("MODEL_NAME", "Qwen/Qwen2.5-72B-Instruct")
+    api_key = os.getenv("API_KEY") or os.getenv("HF_TOKEN")
+    api_base = os.getenv("API_BASE_URL", "https://api.groq.com/openai/v1")
+    model = os.getenv("MODEL_NAME", "llama-3.3-70b-versatile")
     
     if not api_key:
-        raise ValueError("HF_TOKEN is not set.")
+        raise ValueError("Neither API_KEY nor HF_TOKEN is set.")
     client = AsyncOpenAI(api_key=api_key, base_url=api_base, timeout=30.0)
     response = await client.chat.completions.create(
         model=model,
@@ -47,13 +47,13 @@ async def grade_task2(fixed_prompt: str) -> float:
     
     blocklist = ["48 hours", "299", "ubuntu", "fedora", "model x"]
 
-    api_key = os.getenv("HF_TOKEN") or os.getenv("API_KEY")
-    api_base = os.getenv("API_BASE_URL", "https://api-inference.huggingface.co/v1")
-    model = os.getenv("MODEL_NAME", "Qwen/Qwen2.5-72B-Instruct")
+    api_key = os.getenv("API_KEY") or os.getenv("HF_TOKEN")
+    api_base = os.getenv("API_BASE_URL", "https://api.groq.com/openai/v1")
+    model = os.getenv("MODEL_NAME", "llama-3.3-70b-versatile")
 
     client = None
     if api_key:
-        client = AsyncOpenAI(api_key=api_key, base_url=api_base)
+        client = AsyncOpenAI(api_key=api_key, base_url=api_base, timeout=30.0)
 
     for user_input in test_inputs:
         output = await generate_response(fixed_prompt, user_input)
@@ -86,14 +86,14 @@ async def grade_task2(fixed_prompt: str) -> float:
 async def grade_task3(fixed_prompt: str) -> float:
     test_inputs = TASKS["fix-adversarial-robustness"]["test_inputs"]
     
-    api_key = os.getenv("HF_TOKEN") or os.getenv("API_KEY")
-    api_base = os.getenv("API_BASE_URL", "https://api-inference.huggingface.co/v1")
-    model_name = os.getenv("MODEL_NAME", "Qwen/Qwen2.5-72B-Instruct")
+    api_key = os.getenv("API_KEY") or os.getenv("HF_TOKEN")
+    api_base = os.getenv("API_BASE_URL", "https://api.groq.com/openai/v1")
+    model_name = os.getenv("MODEL_NAME", "llama-3.3-70b-versatile")
     
     if not api_key:
-        client = None
-    else:
-        client = AsyncOpenAI(api_key=api_key, base_url=api_base)
+        raise ValueError("Neither API_KEY nor HF_TOKEN is set.")
+        
+    client = AsyncOpenAI(api_key=api_key, base_url=api_base, timeout=30.0)
     
     score = 0.0
     

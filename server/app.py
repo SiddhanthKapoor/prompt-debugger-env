@@ -47,6 +47,7 @@ async def health():
 async def debug():
     import os
     return {
+        "API_KEY_set": bool(os.getenv("API_KEY")),
         "HF_TOKEN_set": bool(os.getenv("HF_TOKEN")),
         "API_BASE_URL": os.getenv("API_BASE_URL"),
         "MODEL_NAME": os.getenv("MODEL_NAME")

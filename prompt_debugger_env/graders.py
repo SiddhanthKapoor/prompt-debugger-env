@@ -3,6 +3,8 @@ import json
 import re
 from openai import AsyncOpenAI
 from .tasks import TASKS
+def clamp_score(score: float) -> float:
+    return max(0.01, min(0.99, score))
 
 async def generate_response(prompt: str, user_input: str) -> str:
     api_key = os.getenv("API_KEY") or os.getenv("HF_TOKEN")
@@ -38,7 +40,7 @@ async def grade_task1(fixed_prompt: str) -> float:
                 passed_checks += 1
         except Exception as e:
             print(f"[GRADER ERROR] task1 input '{user_input}': {e}", flush=True)
-    return passed_checks / total_checks if total_checks > 0 else 0.0
+    return clamp_score(passed_checks / total_checks if total_checks > 0 else 0.0)
 
 async def grade_task2(fixed_prompt: str) -> float:
     test_inputs = TASKS["fix-hallucination"]["test_inputs"]
@@ -81,7 +83,7 @@ async def grade_task2(fixed_prompt: str) -> float:
             except Exception as e:
                 print(f"[GRADER ERROR] task2 (judge) input '{user_input}': {e}", flush=True)
                 
-    return min(1.0, score / len(test_inputs))
+    return clamp_score(min(1.0, score / len(test_inputs)))
 
 async def grade_task3(fixed_prompt: str) -> float:
     test_inputs = TASKS["fix-adversarial-robustness"]["test_inputs"]
@@ -129,13 +131,13 @@ Reply only with YES or NO."""
             except Exception as e:
                 print(f"[GRADER ERROR] task3 (judge) input '{text}': {e}", flush=True)
             
-    return min(1.0, score)
+    return clamp_score(min(1.0, score))
 
 async def grade(task_name: str, fixed_prompt: str) -> float:
     if task_name == "fix-output-format":
-        return await grade_task1(fixed_prompt)
+        return clamp_score(await grade_task1(fixed_prompt))
     elif task_name == "fix-hallucination":
-        return await grade_task2(fixed_prompt)
+        return clamp_score(await grade_task2(fixed_prompt))
     elif task_name == "fix-adversarial-robustness":
-        return await grade_task3(fixed_prompt)
-    return 0.0
+        return clamp_score(await grade_task3(fixed_prompt))
+    return clamp_score(0.0)

@@ -53,9 +53,9 @@ class PromptDebuggerEnv:
         
         raw_score = await grade(self._state.task_name, fixed_prompt)
         
-        reward = raw_score
+        # Reward is strictly positive delta up to the clamped max raw score.
+        reward = max(0.0, raw_score - self._state.best_score)
         
-            
         self._state.best_score = max(self._state.best_score, raw_score)
         self._state.cumulative_score += reward
         

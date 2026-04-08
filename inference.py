@@ -32,7 +32,7 @@ async def run_task(task_name: str, client: AsyncOpenAI, env: PromptDebuggerEnv):
     rewards = []
     done = False
     step_count = 0
-    score = 0.0
+    score = obs.get('last_score', 0.01)
     
     while not done and step_count < 5:
         step_count += 1
@@ -89,6 +89,7 @@ Feedback on last attempt:
             print(f"[STEP] step={step_count} action={action_text} reward=0.00 done=false error={error_msg}")
             break
             
+    score = max(0.01, min(0.99, score))
     success = score >= 0.700
     rewards_str = ",".join([f"{r:.2f}" for r in rewards])
     print(f"[END] success={str(success).lower()} steps={step_count} score={score:.3f} rewards={rewards_str}")
